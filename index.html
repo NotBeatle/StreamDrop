@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamDrop | Video Downloader</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e1e2e">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2584/2584664.png">
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="logo">📥 StreamDrop</div>
+        <button id="installBtn" class="btn-install hidden">Install App</button>
+    </header>
+
+    <nav class="bottom-nav">
+        <button id="navHome" class="nav-item active">🏠 Downloader</button>
+        <button id="navHistory" class="nav-item">📊 Dashboard</button>
+    </nav>
+
+    <main class="container">
+        
+        <section id="homeSection" class="app-section">
+            <div class="card card-input">
+                <h2>Download Media</h2>
+                <p class="subtitle">Enter a link you have permission to download.</p>
+                <div class="input-group">
+                    <input type="url" id="videoUrl" placeholder="Paste URL here..." autocomplete="off">
+                    <button id="analyzeBtn" class="btn-primary">Analyze Link</button>
+                </div>
+            </div>
+
+            <div id="loader" class="loader-wrapper hidden">
+                <div class="spinner"></div>
+                <p id="loaderText">Analyzing link...</p>
+            </div>
+
+            <div id="errorMessage" class="error-card hidden"></div>
+
+            <div id="previewCard" class="card card-preview hidden">
+                <img id="videoThumb" src="" alt="Thumbnail" class="thumbnail">
+                <div class="video-info">
+                    <h3 id="videoTitle">Video Title</h3>
+                    <p id="videoDuration">Duration: --:--</p>
+                </div>
+                <hr class="divider">
+                <div class="download-controls">
+                    <label for="qualitySelect">Select Quality:</label>
+                    <select id="qualitySelect" class="form-select">
+                        <option value="720p">High Quality (720p)</option>
+                        <option value="360p">Standard Quality (360p)</option>
+                        <option value="audio">Audio Only (MP3)</option>
+                    </select>
+                    <button id="downloadBtn" class="btn-success">Download Video</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="historySection" class="app-section hidden">
+            <div class="card">
+                <h2>Download Manager</h2>
+                <p class="subtitle">Your recent local download history</p>
+                <ul id="historyList" class="history-list"></ul>
+                <button id="clearHistoryBtn" class="btn-danger hidden">Clear History</button>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
