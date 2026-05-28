@@ -1,5 +1,5 @@
-// CONFIGURATION: Replace with your deployed live server URL
-const BACKEND_URL = 'YOUR_BACKEND_URL_HERE'; 
+// Production Live Render Backend Endpoint Link
+const BACKEND_URL = 'https://streamdrop-yzkt.onrender.com'; 
 
 const navHome = document.getElementById('navHome');
 const navHistory = document.getElementById('navHistory');
@@ -102,6 +102,42 @@ function renderHistory() {
         historyList.innerHTML = `<p class="subtitle" style="text-align:center;">No downloads recorded.</p>`;
         clearHistoryBtn.classList.add('hidden');
         return;
+    }
+    clearHistoryBtn.classList.remove('hidden');
+    history.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'history-item';
+        li.innerHTML = `
+            <div style="max-width:70%;">
+                <div class="history-title">${item.title}</div>
+                <div class="history-meta">${item.timestamp} | ${item.quality}</div>
+            </div>
+            <a href="${item.fileUrl}" class="btn-inline-dl" download>Save</a>
+        `;
+        historyList.appendChild(li);
+    });
+}
+
+clearHistoryBtn.addEventListener('click', () => { localStorage.removeItem('dl_history'); renderHistory(); });
+function showLoader(t) { loaderText.textContent = t; loader.classList.remove('hidden'); }
+function hideLoader() { loader.classList.add('hidden'); }
+function showError(m) { errorMessage.textContent = m; errorMessage.classList.remove('hidden'); }
+function hideError() { errorMessage.classList.add('hidden'); }
+
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.classList.remove('hidden'); });
+installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') installBtn.classList.add('hidden');
+    deferredPrompt = null;
+});
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log(err)); });
+}
     }
     clearHistoryBtn.classList.remove('hidden');
     history.forEach(item => {
